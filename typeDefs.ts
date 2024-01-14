@@ -6,6 +6,7 @@ export const typeDefs = gql`
     title: String
     avatar: String
     description: String
+    category: Category
   }
   
   type Category {
@@ -15,7 +16,6 @@ export const typeDefs = gql`
   }
 
   type Query {
-    hello: String
     getListArticle: [Article],
     getArticle(id: ID): Article,
     getListCategory: [Category],
