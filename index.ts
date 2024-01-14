@@ -1,13 +1,17 @@
+import { resolvers } from './resolvers';
 import express, {Express, Request, Response} from "express"
 import dotenv from "dotenv";
 // import path from "path";
 // import methodOverride from "method-override"
 import * as database from "./config/database";
-import Article from "./models/article.model";
+import {ApolloServer, gql} from "apollo-server-express";
+import { typeDefs } from "./typeDefs";
 // import clientRoutes from "./routes/client/index.route";
 // import adminRoutes from "./routes/admin/index.route";
 // import {systemConfig} from "./config/system"
-const app: Express = express();
+
+const startServer = async () => {
+  const app: Express = express();
 const port: number | string = process.env.PORT || 3000
 dotenv.config();
 // app.locals.prefixAdmin = systemConfig.prefixAdmin;
@@ -27,13 +31,22 @@ database.connect(); // kết nối với mongodb
 // app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
 // // end tiny mce
 
-app.get("/articles", async (req: Request, res: Response): Promise<void> => {
-  const articles = await Article.find({
-    deleted: false
-  })
-  res.json({
-    articles: articles
-  });
+//GraphQl
+
+
+
+
+
+const apolloServer = new ApolloServer({
+  typeDefs,
+  resolvers
+});
+
+await apolloServer.start();
+
+apolloServer.applyMiddleware({
+  app: app,
+  path: "/graphql"
 });
 
 // clientRoutes(app);
@@ -41,3 +54,7 @@ app.get("/articles", async (req: Request, res: Response): Promise<void> => {
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
+
+}
+
+startServer();
