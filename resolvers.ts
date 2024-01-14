@@ -2,9 +2,6 @@ import Article from "./models/article.model";
 
 export const resolvers = {
   Query: {
-      hello: () => {
-        return "Hello world";
-      },
       getListArticle: async () => {
         const articles = await Article.find({
           deleted: false
@@ -28,6 +25,28 @@ export const resolvers = {
         const record = new Article(article);
         await record.save();
         return record;
-        }  
+        },
+    deleteArticle: async (_, args): Promise<any> => {
+      const { id  } = args;
+        await Article.updateOne({
+          _id: id
+        }, {
+          deleted: true,
+          deletedAt: new Date()
+        });
+        return "đã xóa";
+        },
+        updateArticle: async (_, args): Promise<any> => {
+      const { id , article } = args;
+       await Article.updateOne({
+          _id: id,
+          deleted: false
+        }, article);
+
+        const record = await Article.findOne({
+          _id: id
+        });
+        return record;
+        },
   }
 }; 
