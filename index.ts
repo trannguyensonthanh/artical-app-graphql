@@ -1,12 +1,12 @@
-import { resolvers } from './resolvers';
-import express, {Express, Request, Response} from "express"
+
+import express, {Express} from "express"
 import dotenv from "dotenv";
 // import path from "path";
 // import methodOverride from "method-override"
 import * as database from "./config/database";
-import {ApolloServer, gql} from "apollo-server-express";
+import {ApolloServer} from "apollo-server-express";
 import { typeDefs } from './typeDefs/index.typeDefs';
-import { typeDefsCategory } from './typeDefs/category.typeDefs';
+import { resolvers } from "./resolvers/index.resolver";
 // import clientRoutes from "./routes/client/index.route";
 // import adminRoutes from "./routes/admin/index.route";
 // import {systemConfig} from "./config/system"
@@ -36,7 +36,7 @@ database.connect(); // kết nối với mongodb
 
 const apolloServer = new ApolloServer({
   typeDefs: typeDefs, // typeDefs là tên của apolloserver
-  resolvers
+  resolvers: resolvers
 });
 
 await apolloServer.start();
