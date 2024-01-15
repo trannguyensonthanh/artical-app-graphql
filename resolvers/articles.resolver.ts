@@ -4,7 +4,7 @@ import Category from "../models/category.model";
 export const resolversArticle = {
   Query: {
     getListArticle: async (_, args) => {
-      const {sortKey, sortValue, currentPage, limitItems, filterKey, filterValue} = args;
+      const {sortKey, sortValue, currentPage, limitItems, filterKey, filterValue, keyword} = args;
 
       const find = {
         deleted: false
@@ -26,6 +26,13 @@ if(filterKey && filterValue){
   find[filterKey] = filterValue;
 }
 // end fillter 
+
+// search
+if(keyword){
+  const keywordRegex = new RegExp(keyword, "i");
+  find["title"] = keywordRegex;
+}
+// end search
       const articles = await Article.find(find).sort(sort).limit(limitItems).skip(skip);
       return articles;
     },
