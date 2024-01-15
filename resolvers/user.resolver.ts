@@ -1,14 +1,7 @@
-
-
 import { generateRandomString } from "../helpers/generate";
 import User from "../models/user.model";
 import md5 from "md5";
-interface data {
-  token: string,
-  email: string,
-  fullName: string,
-  id: string
-}
+
 export const resolversUser = {
 
   Mutation: {
@@ -41,5 +34,40 @@ export const resolversUser = {
      }
     }
     },
+    loginUser: async(_,args) => {
+      const {email, password} = args.user;
+      const infoUser = await User.findOne({
+        email: email,
+        deleted: false
+      });
+      
+      if(!infoUser){
+     return {
+          code: 400,
+          message: "Email không tồn tại!",
+        }; 
+ 
+      }
+       
+      
+      if(md5(password) !== infoUser.password){
+     return {
+        code: 400,
+        message: "Sai mật khẩu!"
+      };
+
+      }
+      
+
+   return {
+        code: 200,
+        message: "Đăng nhập thành công!",
+        id: infoUser.id,
+        fullName: infoUser.fullName,
+        email: infoUser.email,
+        token: infoUser.token
+      };
+       
+    }
   },
 };
