@@ -10,7 +10,7 @@ deleted: {
   default: false
 },
 deletedAt: Date
-}, {
+}, { 
   timestamps: true // thời gian tạo và cập nhật
 });
 

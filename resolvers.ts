@@ -82,14 +82,14 @@ export const resolvers = {
       });
       return record;
     },
-    createCateogry: async (_, args): Promise<any> => {
+    createCategory: async (_, args): Promise<any> => {
       const { category } = args;
       const record = new Article(category);
       await record.save();
       return record;
     },
 
-    updateCateogry: async (_, args): Promise<any> => {
+    updateCategory: async (_, args): Promise<any> => {
       const { id, category } = args;
       await Article.updateOne(
         {
