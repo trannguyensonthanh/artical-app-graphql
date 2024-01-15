@@ -7,6 +7,7 @@ import * as database from "./config/database";
 import {ApolloServer} from "apollo-server-express";
 import { typeDefs } from './typeDefs/index.typeDefs';
 import { resolvers } from "./resolvers/index.resolver";
+import { requireAuth } from "./middlewares/auth.middleware";
 // import clientRoutes from "./routes/client/index.route";
 // import adminRoutes from "./routes/admin/index.route";
 // import {systemConfig} from "./config/system"
@@ -34,9 +35,14 @@ database.connect(); // kết nối với mongodb
 
 //GraphQl
 
+app.use("/graphql", requireAuth);
+
 const apolloServer = new ApolloServer({
   typeDefs: typeDefs, // typeDefs là tên của apolloserver
-  resolvers: resolvers
+  resolvers: resolvers,
+  context: ({req}) => {
+return {...req};
+  }
 });
 
 await apolloServer.start();
@@ -46,8 +52,6 @@ apolloServer.applyMiddleware({
   path: "/graphql"
 });
 
-// clientRoutes(app);
-// adminRoutes(app);
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
