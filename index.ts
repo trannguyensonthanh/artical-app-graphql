@@ -5,7 +5,8 @@ import dotenv from "dotenv";
 // import methodOverride from "method-override"
 import * as database from "./config/database";
 import {ApolloServer, gql} from "apollo-server-express";
-import { typeDefs } from "./typeDefs";
+import { typeDefs } from './typeDefs/index.typeDefs';
+import { typeDefsCategory } from './typeDefs/category.typeDefs';
 // import clientRoutes from "./routes/client/index.route";
 // import adminRoutes from "./routes/admin/index.route";
 // import {systemConfig} from "./config/system"
@@ -33,12 +34,8 @@ database.connect(); // kết nối với mongodb
 
 //GraphQl
 
-
-
-
-
 const apolloServer = new ApolloServer({
-  typeDefs,
+  typeDefs: typeDefs, // typeDefs là tên của apolloserver
   resolvers
 });
 
